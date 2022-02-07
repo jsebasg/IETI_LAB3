@@ -2,7 +2,10 @@ package edu.eci.ieti.lab2.controller;
 
 import edu.eci.ieti.lab2.data.User;
 import edu.eci.ieti.lab2.dto.UserDto;
+import edu.eci.ieti.lab2.repository.UserRepository;
 import edu.eci.ieti.lab2.service.UserService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -17,6 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 @RequestMapping( "/v1/user" )
 public class UserController {
+    
     private final UserService userService;
     private final AtomicLong counter = new AtomicLong(0);
 
@@ -64,8 +69,19 @@ public class UserController {
         }catch (Exception e){
             return new ResponseEntity<Boolean>(false , HttpStatus.OK );
         }
-
     }
-
-
+    
+    @GetMapping( "/FindByName/{qweryText}" )
+     public ResponseEntity<List<User>> findUsersWithNameOrLastNameLike(@PathVariable String qweryText ) {
+        return new ResponseEntity<List<User>>(userService.findUsersWithNameOrLastNameLike(qweryText), HttpStatus.OK );
+    }
+     
+    @GetMapping( "/FindByDate/{date}" )
+     public ResponseEntity<List<User>> findUsersCreatedAfter(@PathVariable String date ) throws ParseException {
+        Date dateFormat =new SimpleDateFormat("dd-MM-yyyy").parse(date);  
+        dateFormat.setTime(0);
+        System.out.println(date.toString()); 
+        
+        return new ResponseEntity<List<User>>(userService.findUsersCreatedAfter(dateFormat), HttpStatus.OK );
+    }
 }

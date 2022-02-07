@@ -8,6 +8,8 @@ package edu.eci.ieti.lab2.service;
 import edu.eci.ieti.lab2.data.User;
 import edu.eci.ieti.lab2.dto.UserDto;
 import edu.eci.ieti.lab2.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,19 @@ public class UserServiceMongoDB implements UserService {
             return actualUser; 
         } 
         return null; 
+    }
+
+    @Override
+    public List<User> findUsersWithNameOrLastNameLike(String queryText) {
+        List<User> users = new ArrayList<>(); 
+        users.addAll(userRepository.findBylastName(queryText)); 
+        users.addAll(userRepository.findByName(queryText)); 
+        return users;
+    }
+
+    @Override
+    public List<User> findUsersCreatedAfter(Date startDate) {
+        return userRepository.findBycreatedAtAfter(startDate) ; 
     }
 
 }

@@ -4,6 +4,7 @@ import edu.eci.ieti.lab2.data.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,5 +38,15 @@ public class UserServiceHashMap implements UserService{
     public User update(User user, String userId) {
         if(users.containsKey(userId)) users.put(userId,user);
         return user;
+    }
+
+    @Override
+    public List<User> findUsersWithNameOrLastNameLike(String queryText) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<User> findUsersCreatedAfter(Date startDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
